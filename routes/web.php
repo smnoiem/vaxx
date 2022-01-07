@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home'); // Provides links for other public routes
 });
+
+Route::get('/registration', [RegistrationController::class, 'create'])->name('registration.create');
+Route::post('/registration', [RegistrationController::class, 'store'])->name('registration.store');
