@@ -13,8 +13,9 @@ class RegistrationController extends Controller
 
     function store(Request $request) 
     {
-
+        
         // Process the registration form data
+        // Validation
         // $request->input('form-field-name');
         return $request->input('nid');
     }

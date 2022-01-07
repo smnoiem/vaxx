@@ -13,7 +13,7 @@
         <a href="/registration">Register</a> <br>
         <a href="/vaccine-status">Vaccine Status</a> <br>
         <a href="/vaccine-card">Download Vaccine Card</a> <br>
-        <a href="/certificate">Download Certificate</a> <br>
+        <a href="/vaccine-certificate">Download Certificate</a> <br>
     </div>
 </body>
 </html>
