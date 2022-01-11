@@ -8,15 +8,23 @@ class RegistrationController extends Controller
 {
     function create() 
     {
-        return view('registration');
+        return view('registration-form');
     }
 
     function store(Request $request) 
     {
         
-        // Process the registration form data
         // Validation
+        $request->validate([
+            'nid' => 'required',
+            'dob' => 'required',
+            'phone' => 'required',
+            'center' => 'required',
+        ]);
+
+        // Register user
+        
         // $request->input('form-field-name');
-        return $request->input('nid');
+        return view('registration');
     }
 }
