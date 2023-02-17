@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidCitizen;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRegistrationRequest extends FormRequest
@@ -25,7 +26,7 @@ class StoreRegistrationRequest extends FormRequest
     {
         return [
             'nid' => 'required|string|max:17|min:10',
-            'dob' => 'required|date',
+            'dob' => ['required', 'date', new ValidCitizen],
             'phone' => 'required|string',
             'center' => 'required|exists:App\Models\Center,id',
         ];
