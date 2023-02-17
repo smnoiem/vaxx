@@ -27,11 +27,14 @@ Route::name('front.')->group(function () {
         Route::get('/', [RegistrationController::class, 'create'])->name('create');
         Route::post('/', [RegistrationController::class, 'store'])->name('store');
 
+        Route::name('status.')->prefix('status')->group(function () {
+
+            Route::get('/', [RegistrationController::class, 'statusForm'])->name('index');
+            Route::post('/', [RegistrationController::class, 'showStatus'])->name('show');
+
+        });
+
     });
-
-    Route::get('/vaccine-status', [VaccineStatusController::class, 'showForm'])->name('vaccine.status');
-
-    Route::post('/vaccine-status', [VaccineStatusController::class, 'showVaccineStatus'])->name('vaccine.status');
 
     Route::get('/vaccine-card', [VaccineCardController::class, 'showForm'])->name('vaccine.card');
 

@@ -1,15 +1,6 @@
-
 <x-layout title="New Registration">
 
     <h3 style="text-align:center;"> Registration Form </h3>
-
-    {{-- {{$errors}}
-
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <li> {{$error}} </li>
-        @endforeach
-    @endif --}}
 
     <form action="{{ route('front.registration.store') }}" method="post">
         @csrf

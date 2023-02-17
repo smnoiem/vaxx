@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShowRegistrationStatusRequest;
 use App\Http\Requests\StoreRegistrationRequest;
 use App\Models\Registration;
 
@@ -25,5 +26,19 @@ class RegistrationController extends Controller
             return view('front.registration.failure');
         }
         
+    }
+
+    function statusForm () {
+        return view('front.registration.status-form');
+    }
+
+    function showStatus (ShowRegistrationStatusRequest $request) {
+        $validated = $request->validated();
+        $registration = Registration::where('nid', $validated['nid'])
+                            ->where('dob', $validated['dob'])
+                            ->where('phone', $validated['phone'])
+                            ->first();
+
+        return view('front.registration.status', compact('registration'));
     }
 }
