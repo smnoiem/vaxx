@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRegistrationRequest;
 use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
@@ -11,15 +12,9 @@ class RegistrationController extends Controller
         return view('front.registration.create');
     }
 
-    function store(Request $request) 
+    function store(StoreRegistrationRequest $request) 
     {
-        // Validation
-        $request->validate([
-            'nid' => 'required',
-            'dob' => 'required',
-            'phone' => 'required',
-            'center' => 'required',
-        ]);
+        $validated = $request->validated();
 
         // Register user
         
