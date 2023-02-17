@@ -25,10 +25,10 @@ class StoreRegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'nid' => 'required|string|max:17|min:10',
+            'nid' => 'required|string|max:17|min:10|exists:App\Models\Registration|unique:App\Models\Registration',
             'dob' => ['required', 'date', new ValidCitizen],
-            'phone' => 'required|string',
-            'center' => 'required|exists:App\Models\Center,id',
+            'phone' => 'required|string|min:11',
+            'center_id' => 'required|exists:App\Models\Center,id',
         ];
     }
 }

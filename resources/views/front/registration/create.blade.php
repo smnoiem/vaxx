@@ -39,13 +39,13 @@
         </span><br> <!-- Verify using OTP -->
 
         <span>Select Center:</span>
-        <select name="center" id="" name="center">
+        <select name="center_id" id="center_id" name="center_id">
         <option value="1">Dhaka</option>
         <option value="2" selected>Gopalganj</option>
         <option value="3">Khulna</option>
         </select> <br>
         <span style="color: red">
-        @error('center')
+        @error('center_id')
             {{$message}}
         @enderror
         </span><br>

@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRegistrationRequest;
 use App\Models\Registration;
-use App\Services\CitizenService;
-use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
 {
@@ -14,12 +12,18 @@ class RegistrationController extends Controller
         return view('front.registration.create');
     }
 
-    function store(StoreRegistrationRequest $request, CitizenService $citizenService) 
+    function store(StoreRegistrationRequest $request) 
     {
         $validated = $request->validated();
 
-        Registration::create($validated);
+        $registration = Registration::create($validated);
         
-        return view('front.registration.success');
+        if($registration) {
+            return view('front.registration.success');
+        }
+        else {
+            return view('front.registration.failure');
+        }
+        
     }
 }
