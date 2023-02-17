@@ -8,12 +8,11 @@ class RegistrationController extends Controller
 {
     function create() 
     {
-        return view('registration-form');
+        return view('front.registration.create');
     }
 
     function store(Request $request) 
     {
-        
         // Validation
         $request->validate([
             'nid' => 'required',
@@ -25,6 +24,6 @@ class RegistrationController extends Controller
         // Register user
         
         // $request->input('form-field-name');
-        return view('registration');
+        return view('front.registration.success');
     }
 }

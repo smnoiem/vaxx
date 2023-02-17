@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\VaccineCertificateController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\VaccineCardController;
@@ -17,15 +18,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::name('public')->group(function () {
+Route::name('front.')->group(function () {
 
-    Route::get('/', function () {
-        return view('home'); // Provides links for other public routes
+    Route::get('/', [HomeController::class, 'index'])->name('index');
+
+    Route::name('registration.')->prefix('registration')->group(function() {
+
+        Route::get('/', [RegistrationController::class, 'create'])->name('create');
+        Route::post('/', [RegistrationController::class, 'store'])->name('store');
+
     });
-
-    Route::get('/registration', [RegistrationController::class, 'create'])->name('registration.create');
-
-    Route::post('/registration', [RegistrationController::class, 'store'])->name('registration.store');
 
     Route::get('/vaccine-status', [VaccineStatusController::class, 'showForm'])->name('vaccine.status');
 

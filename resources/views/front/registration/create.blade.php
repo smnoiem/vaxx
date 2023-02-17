@@ -3,17 +3,15 @@
 
   <h3 style="text-align:center;"> Registration Form </h3>
 
-  <!--
-  {{$errors}}
+  {{-- {{$errors}}
 
   @if ($errors->any())
       @foreach ($errors->all() as $error)
           <li> {{$error}} </li>
       @endforeach
-  @endif
-  -->
+  @endif --}}
 
-  <form action="/registration" method="post">
+  <form action="{{ route('front.registration.store') }}" method="post">
     @csrf
     <span>NID:</span> <!-- validate the NID from a verification API -->
     <input type="text" name="nid"> <br>
