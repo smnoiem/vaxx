@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Center extends Model
+class Vaccine extends Model
 {
     use HasFactory;
 
-    public function operators()
+    public function doses()
     {
-        return $this->hasMany(User::class, 'center_id', 'id');
+        return $this->hasMany(Dose::class);
     }
 }

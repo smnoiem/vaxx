@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCitizensTable extends Migration
+class AddAddressToCentersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateCitizensTable extends Migration
      */
     public function up()
     {
-        Schema::create('citizens', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 100)->nullable();
-            $table->string('nid', 25)->nullable();
-            $table->date('dob')->nullable();
-            $table->timestamps();
+        Schema::table('centers', function (Blueprint $table) {
+            $table->string('address', 350)->nullable();
         });
     }
 
@@ -29,6 +25,10 @@ class CreateCitizensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('citizens');
+        Schema::table('centers', function (Blueprint $table) {
+            if(Schema::hasColumn('centers', 'address')) {
+                $table->dropColumn('address');
+            }
+        });
     }
 }
