@@ -49,7 +49,7 @@ Route::name('front.')->group(function () {
 
 });
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'role:1']], function () {
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
@@ -69,6 +69,28 @@ Route::group(['middleware' => ['auth']], function () {
   
     });
   
-  });
+});
+
+Route::group(['middleware' => ['auth', 'role:2']], function () {
+
+    Route::group(['prefix' => 'center', 'as' => 'center.'], function () {
+
+        Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+        // Route::resource('centers', CenterController::class);
+
+        // Route::get('centers/{center}/update-vial-count', [CenterController::class, 'updateVial'])->name('centers.update-vial-count');
+
+        // Route::post('centers/{center}/update-vial-count', [CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
+
+        // Route::resource('users', UserController::class);
+
+        // Route::get('users/{user}/assign-center', [UserController::class, 'assignCenter'])->name('users.assign-center');
+
+        // Route::post('users/{user}/assign-center', [UserController::class, 'assignCenterStore'])->name('users.assign-center-store');
+  
+    });
+  
+});
 
 require __DIR__ . '/auth.php';
