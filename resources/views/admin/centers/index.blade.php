@@ -13,7 +13,8 @@
                         <tr>
                             <th class="text-center">#</th>
                             <th>Name</th>
-                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Daily Capacity</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -22,7 +23,8 @@
                         <tr>
                             <th class="text-center">{{$loop->iteration}}</th>
                             <td><b>{{ ucwords($center->name) }}</b></td>
-                            <td><b>{{ $center->email }}</b></td>
+                            <td><b>{{ $center->address }}</b></td>
+                            <td><b>{{ $center->daily_limit }}</b></td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                 Action
