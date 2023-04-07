@@ -4,7 +4,7 @@
         <div class="card card-outline card-success">
             <div class="card-header">
                 <div class="card-tools">
-                    <a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="{{route('operator.registrations.create')}}"><i class="fa fa-plus"></i> Add Another Dose</a>
+                    <a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="{{route('operator.registrations.doses.create', $registration->nid)}}"><i class="fa fa-plus"></i> Add Another Dose</a>
                 </div>
             </div>
             <div class="card-body">
@@ -26,7 +26,7 @@
                             <th class="text-center">{{$loop->iteration}}</th>
                             <td><b>{{ ucwords($dose->dose_type) }}</b></td>
                             <td><b>{{ ucwords($dose->vaccine->name) }}</b></td>
-                            <td><b>{{ ucwords($dose->givenBy->name) }}</b></td>
+                            <td><b>{{ ucwords($dose->givenBy?->name) }}</b></td>
                             <td><b>{{ ucwords($dose->scheduled_date) }}</b></td>
                             <td><b>{{ ucwords($dose->taken_date) }}</b></td>
                             <td class="text-center">
@@ -34,9 +34,7 @@
                                 Action
                                 </button>
                                 <div class="dropdown-menu" style="">
-                                    <a class="dropdown-item mark-as-taken" href="{{route('operator.registrations.vaccines.mark-as-taken',[$registration->nid, $dose->id])}}" data-registration-nid="{{$registration->nid}}">Mark as taken</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item vaccines" href="{{route('operator.registrations.vaccines', $registration->nid)}}" data-id="{{$registration->nid}}">Vaccines</a>
+                                    <a class="dropdown-item mark-as-taken" href="{{route('operator.registrations.doses.mark-as-taken',[$registration->nid, $dose->id])}}" data-registration-nid="{{$registration->nid}}">Mark as taken</a>
                                     <div class="dropdown-divider"></div>
                                 </div>
                             </td>

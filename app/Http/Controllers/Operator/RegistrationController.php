@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Vaccine;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -109,10 +110,61 @@ class RegistrationController extends Controller
         //
     }
 
-    public function getVaccines(Registration $registration)
+    public function getDoses(Registration $registration)
+    {
+        return view('operator.registrations.doses', compact('registration'));
+    }
+
+    public function doseCreate(Registration $registration)
     {
         $vaccines = Vaccine::all();
-        return view('operator.registrations.vaccines', compact('registration', 'vaccines'));
+
+        return view('operator.registrations.doses.create', compact('registration', 'vaccines'));
+    }
+
+    public function doseStore(Request $request, Registration $registration)
+    {
+        $validOperator = auth()->user()->center == $registration->center;
+
+        if (!$validOperator)
+            abort(401);
+
+        $doseType = $request->input('type');
+        $doseExists = Dose::where('recipient_nid', $registration->nid)
+            ->where('dose_type', $doseType)
+            ->exists();
+
+        if ($doseExists) {
+            return 2;
+        }
+
+        $dose = Dose::create([
+            'recipient_nid' => $registration->nid,
+            'vaccine_id' => $request->input('vaccine'),
+            'dose_type' => $request->input('type'),
+            'scheduled_date' => $request->input('date'),
+            'given_by' => null,
+        ]);
+
+        if ($dose) {
+
+            if ($registration->center->current_available_date_count < ($registration->center->daily_limit - 1)) {
+                $registration->center->current_available_date_count++;
+                $registration->center->update();
+            } else {
+                $registration->center->current_available_date_count = 0;
+
+                $currentDate = Carbon::create($registration->center->current_available_date);
+
+                $nextDay = $currentDate->addDay();
+
+                $registration->center->current_available_date = $nextDay;
+
+                $registration->center->update();
+            }
+        }
+
+        return 1;
     }
 
     public function markDoseAsTaken(Registration $registration, Dose $dose)
@@ -126,12 +178,13 @@ class RegistrationController extends Controller
 
         if (!$dose->taken_date) {
             $dose->taken_date = now();
+            $dose->given_by = auth()->user()->id;
             $dose->update();
         }
 
         $vaccines = Vaccine::all();
 
-        return redirect(route('operator.registrations.vaccines', $registration->nid));
+        return redirect(route('operator.registrations.doses', $registration->nid));
     }
 
     public function assignCenterStore(StoreAssignCenterRequest $request, User $user)

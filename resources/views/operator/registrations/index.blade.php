@@ -34,7 +34,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{route('operator.registrations.edit', $registration->nid)}}">Edit</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item vaccines" href="{{route('operator.registrations.vaccines', $registration->nid)}}" data-id="{{$registration->nid}}">Vaccines</a>
+                                <a class="dropdown-item doses" href="{{route('operator.registrations.doses', $registration->nid)}}" data-id="{{$registration->nid}}">Doses</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item delete_registration" href="javascript:void(0)" data-id="{{$registration->nid}}">Delete</a>
                                 </div>

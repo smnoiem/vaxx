@@ -81,15 +81,15 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
 
         Route::resource('registrations', OperatorRegistrationController::class);
 
-        Route::get('registrations/{registration}/doses/{dose}', [OperatorRegistrationController::class, 'markDoseAsTaken'])->name('registrations.vaccines.mark-as-taken');
+        Route::get('registrations/{registration}/doses', [OperatorRegistrationController::class, 'getDoses'])->name('registrations.doses');
 
-        Route::get('registrations/{registration}/vaccines', [OperatorRegistrationController::class, 'getVaccines'])->name('registrations.vaccines');
+        Route::get('registrations/{registration}/doses/create', [OperatorRegistrationController::class, 'doseCreate'])->name('registrations.doses.create');
+
+        Route::get('registrations/{registration}/doses/{dose}', [OperatorRegistrationController::class, 'markDoseAsTaken'])->name('registrations.doses.mark-as-taken');
+
+        Route::post('registrations/{registration}/doses', [OperatorRegistrationController::class, 'doseStore'])->name('registrations.doses.store');
 
         Route::post('centers/{center}/update-vial-count', [CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
-
-        Route::resource('users', UserController::class);
-
-        Route::post('users/{user}/assign-center', [UserController::class, 'assignCenterStore'])->name('users.assign-center-store');
 
     });
 
