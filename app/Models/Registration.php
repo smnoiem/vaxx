@@ -9,6 +9,12 @@ class Registration extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'nid';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
     protected $fillable = [
         'nid',
         'dob',

@@ -5,6 +5,7 @@ use App\Http\Controllers\Operator;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\VaccineCertificateController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\Operator\RegistrationController as OperatorRegistrationController;
 use App\Http\Controllers\VaccineCardController;
 use App\Http\Controllers\VaccineStatusController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,7 @@ Route::name('front.')->group(function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('index');
 
-    Route::name('registration.')->prefix('registration')->group(function() {
+    Route::name('registration.')->prefix('registration')->group(function () {
 
         Route::get('/', [RegistrationController::class, 'create'])->name('create');
         Route::post('/', [RegistrationController::class, 'store'])->name('store');
@@ -52,44 +53,46 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
-      Route::get('/', [Admin\DashboardController::class, 'index'])->name('index');
+        Route::get('/', [Admin\DashboardController::class, 'index'])->name('index');
 
-      Route::resource('centers', Admin\CenterController::class);
+        Route::resource('centers', Admin\CenterController::class);
 
-      Route::get('centers/{center}/update-vial-count', [Admin\CenterController::class, 'updateVial'])->name('centers.update-vial-count');
+        Route::get('centers/{center}/update-vial-count', [Admin\CenterController::class, 'updateVial'])->name('centers.update-vial-count');
 
-      Route::post('centers/{center}/update-vial-count', [Admin\CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
+        Route::post('centers/{center}/update-vial-count', [Admin\CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
 
-      Route::resource('users', Admin\UserController::class);
+        Route::resource('users', Admin\UserController::class);
 
-      Route::get('users/{user}/assign-center', [Admin\UserController::class, 'assignCenter'])->name('users.assign-center');
+        Route::get('users/{user}/assign-center', [Admin\UserController::class, 'assignCenter'])->name('users.assign-center');
 
-      Route::post('users/{user}/assign-center', [Admin\UserController::class, 'assignCenterStore'])->name('users.assign-center-store');
-  
+        Route::post('users/{user}/assign-center', [Admin\UserController::class, 'assignCenterStore'])->name('users.assign-center-store');
+
     });
-  
+
 });
 
 Route::group(['middleware' => ['auth', 'role:2']], function () {
 
-    Route::group(['prefix' => 'center', 'as' => 'center.'], function () {
+    Route::group(['prefix' => 'center', 'as' => 'operator.'], function () {
 
         Route::get('/', [Operator\DashboardController::class, 'index'])->name('index');
 
-        // Route::resource('centers', CenterController::class);
+        Route::resource('centers', CenterController::class);
 
-        // Route::get('centers/{center}/update-vial-count', [CenterController::class, 'updateVial'])->name('centers.update-vial-count');
+        Route::resource('registrations', OperatorRegistrationController::class);
 
-        // Route::post('centers/{center}/update-vial-count', [CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
+        Route::get('registrations/{registration}/doses/{dose}', [OperatorRegistrationController::class, 'markDoseAsTaken'])->name('registrations.vaccines.mark-as-taken');
 
-        // Route::resource('users', UserController::class);
+        Route::get('registrations/{registration}/vaccines', [OperatorRegistrationController::class, 'getVaccines'])->name('registrations.vaccines');
 
-        // Route::get('users/{user}/assign-center', [UserController::class, 'assignCenter'])->name('users.assign-center');
+        Route::post('centers/{center}/update-vial-count', [CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
 
-        // Route::post('users/{user}/assign-center', [UserController::class, 'assignCenterStore'])->name('users.assign-center-store');
-  
+        Route::resource('users', UserController::class);
+
+        Route::post('users/{user}/assign-center', [UserController::class, 'assignCenterStore'])->name('users.assign-center-store');
+
     });
-  
+
 });
 
 require __DIR__ . '/auth.php';

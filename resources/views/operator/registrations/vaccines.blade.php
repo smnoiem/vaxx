@@ -1,10 +1,10 @@
-@extends('operator.layouts.body', ['title' => 'Vaccine Registration List', 'page'=> 'registration_list'])
+@extends('operator.layouts.body', ['title' => 'Vaccine Dose List', 'page'=> 'registration_dose_list'])
 @section('content')
     <div class="col-lg-12">
         <div class="card card-outline card-success">
             <div class="card-header">
                 <div class="card-tools">
-                    <a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="{{route('operator.registrations.create')}}"><i class="fa fa-plus"></i> Add New Registration</a>
+                    <a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="{{route('operator.registrations.create')}}"><i class="fa fa-plus"></i> Add Another Dose</a>
                 </div>
             </div>
             <div class="card-body">
@@ -12,31 +12,32 @@
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
-                            <th>NID</th>
-                            <th>Name</th>
-                            <th>Phone</th>
+                            <th>Dose Type</th>
+                            <th>Dose Name</th>
+                            <th>Given By</th>
+                            <th>Appointment Date</th>
+                            <th>Vaccination Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($registrations as $registration)
+                        @foreach($registration->doses as $dose)
                         <tr>
                             <th class="text-center">{{$loop->iteration}}</th>
-                            <td><b>{{ ucwords($registration->nid) }}</b></td>
-                            <td><b>{{ ucwords($registration->citizen->name) }}</b></td>
-                            <td><b>{{ ucwords($registration->phone) }}</b></td>
+                            <td><b>{{ ucwords($dose->dose_type) }}</b></td>
+                            <td><b>{{ ucwords($dose->vaccine->name) }}</b></td>
+                            <td><b>{{ ucwords($dose->givenBy->name) }}</b></td>
+                            <td><b>{{ ucwords($dose->scheduled_date) }}</b></td>
+                            <td><b>{{ ucwords($dose->taken_date) }}</b></td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                 Action
                                 </button>
                                 <div class="dropdown-menu" style="">
-                                <a class="dropdown-item view_registration" href="javascript:void(0)" data-id="{{$registration->nid}}">View</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{route('operator.registrations.edit', $registration->nid)}}">Edit</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item vaccines" href="{{route('operator.registrations.vaccines', $registration->nid)}}" data-id="{{$registration->nid}}">Vaccines</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item delete_registration" href="javascript:void(0)" data-id="{{$registration->nid}}">Delete</a>
+                                    <a class="dropdown-item mark-as-taken" href="{{route('operator.registrations.vaccines.mark-as-taken',[$registration->nid, $dose->id])}}" data-registration-nid="{{$registration->nid}}">Mark as taken</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item vaccines" href="{{route('operator.registrations.vaccines', $registration->nid)}}" data-id="{{$registration->nid}}">Vaccines</a>
+                                    <div class="dropdown-divider"></div>
                                 </div>
                             </td>
                         </tr>	
