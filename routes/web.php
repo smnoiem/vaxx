@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Operator;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Operator\VaccineStockController;
 use App\Http\Controllers\VaccineCertificateController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\Operator\RegistrationController as OperatorRegistrationController;
@@ -89,7 +90,7 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
 
         Route::post('registrations/{registration}/doses', [OperatorRegistrationController::class, 'doseStore'])->name('registrations.doses.store');
 
-        Route::post('centers/{center}/update-vial-count', [CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
+        Route::get('vaccine-stock', [VaccineStockController::class, 'getVaccineStock'])->name('vaccine-stock.index');
 
     });
 

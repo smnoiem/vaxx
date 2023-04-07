@@ -24,4 +24,9 @@ class Center extends Model
     {
         return $this->hasMany(User::class, 'center_id', 'id');
     }
+
+    public function vaccineStocks()
+    {
+        return $this->hasMany(CenterVaccineStock::class);
+    }
 }

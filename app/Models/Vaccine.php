@@ -13,4 +13,9 @@ class Vaccine extends Model
     {
         return $this->hasMany(Dose::class);
     }
+
+    public function vaccineStocks()
+    {
+        return $this->hasMany(CenterVaccineStock::class);
+    }
 }
