@@ -58,9 +58,9 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
 
         Route::resource('centers', Admin\CenterController::class);
 
-        Route::get('centers/{center}/update-vial-count', [Admin\CenterController::class, 'updateVial'])->name('centers.update-vial-count');
+        Route::get('centers/{center}/send-vaccine', [Admin\CenterController::class, 'sendVaccine'])->name('centers.send-vaccine');
 
-        Route::post('centers/{center}/update-vial-count', [Admin\CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
+        Route::post('centers/{center}/send-vaccine', [Admin\CenterController::class, 'sendVaccineStore'])->name('centers.send-vaccine-store');
 
         Route::resource('users', Admin\UserController::class);
 

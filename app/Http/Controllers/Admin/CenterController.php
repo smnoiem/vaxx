@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCenterRequest;
 use App\Models\Center;
+use App\Models\CenterVaccineStock;
+use App\Models\Vaccine;
 use Illuminate\Http\Request;
 
 class CenterController extends Controller
@@ -44,7 +46,8 @@ class CenterController extends Controller
 
         $saved = $center->save();
 
-        if($saved) return 1;
+        if ($saved)
+            return 1;
 
         return response('Center couldn\'t be created!', 500);
     }
@@ -87,7 +90,8 @@ class CenterController extends Controller
 
         $saved = $center->update();
 
-        if($saved) return 1;
+        if ($saved)
+            return 1;
 
         return response('Center Data Couldn\'t be Updated!', 500);
     }
@@ -103,18 +107,36 @@ class CenterController extends Controller
         //
     }
 
-    public function updateVial(Center $center)
+    public function sendVaccine(Center $center)
     {
-        return view('admin.centers.update-vial', compact('center'));
+        $vaccines = Vaccine::all();
+        return view('admin.centers.send-vaccine', compact('center', 'vaccines'));
     }
 
-    public function updateVialStore(Request $request, Center $center)
+    public function sendVaccineStore(Request $request, Center $center)
     {
+        $vaccine = $request->input('vaccine_id');
 
-        $isUpdated = $center->update(['daily_limit' => $request->input('new_count')]);
-        
-        if($isUpdated) return 1;
-        
-        return response('Updating Failed!', 500);
+        $centerVaccineStock = CenterVaccineStock::where('vaccine_id', $vaccine)
+            ->where('center_id', $center->id)
+            ->first();
+
+        if ($centerVaccineStock) {
+
+            $centerVaccineStock->quantity += $request->input('quantity');
+            $centerVaccineStock = $centerVaccineStock->update();
+
+        } else {
+            $centerVaccineStock = CenterVaccineStock::create([
+                'vaccine_id' => $vaccine,
+                'center_id' => $center,
+                'quantity' => $request->input('quantity'),
+            ]);
+        }
+
+        if (!$centerVaccineStock)
+            return response('Updating Failed!', 500);
+        else
+            return 1;
     }
 }

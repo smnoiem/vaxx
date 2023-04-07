@@ -1,9 +1,9 @@
-@extends('admin.layouts.body', ['title' => 'Update Vial', 'page'=> 'update_vial'])
+@extends('admin.layouts.body', ['title' => 'Update Vaccine', 'page'=> 'update_vaccine'])
 @section('content')
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <form action="" id="update_vial">
+                <form action="" id="update_vaccine">
                     @csrf
                     @method('POST')
                     <input type="hidden" name="center_id" value="{{ $center->id }}">
@@ -19,16 +19,27 @@
                     </div>
             
                     <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label for="new_count"> New Count</label>
-                            <input type="number" name="new_count" value="{{$center->daily_limit}}">
+                        <div class="col-md-4 form-group">
+                            <label for="vaccine_id">Select Vaccine</label>
+                            <select class="form-control form-control-sm select2" name="vaccine_id" id="vaccine_id" required>
+
+                                <option value="">Select Vaccine</option>
+                                @foreach($vaccines as $vaccine)
+                                    <option value="{{ $vaccine->id }}">{{ $vaccine->vendor . ' - ' . $vaccine->name}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="quantity">Quantity</label>
+                            <input class="form-control form-control-sm" type="number" name="quantity" id="quantity" required>
                         </div>
                     </div>
 
 
                     <hr>
                     <div class="col-lg-12 text-right justify-content-center d-flex">
-                        <button class="btn btn-primary mr-2">Save</button>
+                        <button class="btn btn-primary mr-2">Send</button>
                         <button class="btn btn-secondary" type="button" onclick="location.href = '{{route('admin.centers.index')}}'">Cancel</button>
                     </div>
                 </form>
@@ -45,13 +56,13 @@
 	</style>
 	<script>
         
-		$('#update_vial').submit(function(e){
+		$('#update_vaccine').submit(function(e){
 			e.preventDefault()
 			$('input').removeClass("border-danger")
 			start_load()
 			$('#msg').html('')
 
-            var url = '{{route("admin.centers.update-vial-count-store", ":id")}}';
+            var url = '{{route("admin.centers.send-vaccine-store", ":id")}}';
             url = url.replace(':id', '{{$center->id}}');
 			$.ajax({
 				url:url,
@@ -73,8 +84,7 @@
                     }
 				},
                 error:function(err) {
-                    console.log(err.responseJSON.message);
-					alert_toast(err.responseJSON.message, "danger");
+					alert_toast('something went wrong', "danger");
 					end_load()
                 }
 			})
