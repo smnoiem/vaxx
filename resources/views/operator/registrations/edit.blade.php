@@ -20,18 +20,6 @@
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group">
-								<label class="control-label">Password</label>
-                                <br>
-								<small>Keep these blank if you don't wish to change password.</small>
-								<input type="password" class="form-control form-control-sm" name="password">
-								<small id="pass_note" data-status=''></small>
-							</div>
-							<div class="form-group">
-								<label class="label control-label">Confirm Password</label>
-								<input type="password" class="form-control form-control-sm" name="password_confirmation">
-								<small id="pass_match" data-status=''></small>
-							</div>
 						</div>
 					</div>
 					<hr>
@@ -52,52 +40,12 @@
 		}
 	</style>
 	<script>
-		$('[name="password"],[name="password_confirmation"]').keyup(function(){
-			var pass = $('[name="password"]').val()
-			var password_confirmation = $('[name="password_confirmation"]').val()
-			if(password_confirmation != '' && pass == ''){
-				$('#pass_note').attr('data-status','2').html('');
-				$('#pass_match').attr('data-status','1').html('');
-			}
-			else if(password_confirmation == '' && pass == ''){
-				$('#pass_note').attr('data-status','1').html('');
-				$('#pass_match').attr('data-status','1').html('');
-			}else{
-				if(password_confirmation == pass){
-					$('#pass_match').attr('data-status','1').html('');
-					$('#pass_note').attr('data-status','1').html('');
-				}else{
-					$('#pass_match').attr('data-status','2').html('');
-					$('#pass_note').attr('data-status','1').html('');
-				}
-			}
-		})
 		$('#manage_registration').submit(function(e){
 			e.preventDefault()
 			$('input').removeClass("border-danger")
 			start_load()
 			$('#msg').html('')
-			if($('[name="password"]').val() != '' || $('[name="password_confirmation"]').val() != ''){
-				if($('#pass_match').attr('data-status') != 1 || $('#pass_note').attr('data-status') != 1){
-					if($('#pass_match').attr('data-status') != 1){
-                        if($('[name="password_confirmation"]').val() == '') {
-                            console.log($('#pass_match').val());
-                            $('#pass_match').html('<i class="text-danger">Required</i>');
-                        }
-                        else {
-                            console.log($('#pass_match').val());
-                            $('#pass_match').html('<i class="text-danger">Password does not match.</i>');
-                        }
-						$('[name="password"],[name="password_confirmation"]').addClass("border-danger")
-					}
-					if($('#pass_note').attr('data-status') != 1){
-                        $('#pass_note').html('<i class="text-danger">Required</i>');
-						$('[name="password"]').addClass("border-danger")
-					}
-					end_load();
-					return false;
-				}
-			}
+            
             var url = '{{route("operator.registrations.update", ":id")}}';
             url = url.replace(':id', '{{$registration->nid}}');
 			$.ajax({

@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class RegistrationController extends Controller
+class VaccineStockController extends Controller
 {
     /**
      * Display a listing of the resource.
