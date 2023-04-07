@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\CenterController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin;
+use App\Http\Controllers\Operator;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\VaccineCertificateController;
 use App\Http\Controllers\RegistrationController;
@@ -53,19 +52,19 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
-      Route::get('/', [DashboardController::class, 'index'])->name('index');
+      Route::get('/', [Admin\DashboardController::class, 'index'])->name('index');
 
-      Route::resource('centers', CenterController::class);
+      Route::resource('centers', Admin\CenterController::class);
 
-      Route::get('centers/{center}/update-vial-count', [CenterController::class, 'updateVial'])->name('centers.update-vial-count');
+      Route::get('centers/{center}/update-vial-count', [Admin\CenterController::class, 'updateVial'])->name('centers.update-vial-count');
 
-      Route::post('centers/{center}/update-vial-count', [CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
+      Route::post('centers/{center}/update-vial-count', [Admin\CenterController::class, 'updateVialStore'])->name('centers.update-vial-count-store');
 
-      Route::resource('users', UserController::class);
+      Route::resource('users', Admin\UserController::class);
 
-      Route::get('users/{user}/assign-center', [UserController::class, 'assignCenter'])->name('users.assign-center');
+      Route::get('users/{user}/assign-center', [Admin\UserController::class, 'assignCenter'])->name('users.assign-center');
 
-      Route::post('users/{user}/assign-center', [UserController::class, 'assignCenterStore'])->name('users.assign-center-store');
+      Route::post('users/{user}/assign-center', [Admin\UserController::class, 'assignCenterStore'])->name('users.assign-center-store');
   
     });
   
@@ -75,7 +74,7 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
 
     Route::group(['prefix' => 'center', 'as' => 'center.'], function () {
 
-        Route::get('/', [DashboardController::class, 'index'])->name('index');
+        Route::get('/', [Operator\DashboardController::class, 'index'])->name('index');
 
         // Route::resource('centers', CenterController::class);
 
