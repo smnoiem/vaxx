@@ -20,8 +20,6 @@ class AddGivenByToDosesTable extends Migration
             $table->timestamps();
         });
 
-        Dose::query()->update(['given_by' => User::first()->id]);
-
         Schema::table('doses', function (Blueprint $table) {
             $table->foreign('given_by')->references('id')->on('users');
         });
